@@ -1,0 +1,27 @@
+#root {
+  margin: 0;
+  padding:0;
+  box-sizing:content-box;
+}
+.tacha > input {
+  width: 30px;
+}
+
+.grido{
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(400px,1fr));
+  grid-template-rows: repeat(30,minmax(90px,auto));
+  grid-auto-flow: dense;
+  gap: 6px;
+}
+
+.icons{
+
+  font-size: 2.8rem;
+  
+}
+
+body{
+  font-family:'Roboto', sans-serif;
+}
