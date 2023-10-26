@@ -1,12 +1,29 @@
-import { useEffect, useRef, useState  } from "react";
+import {   useEffect, useRef, useState  } from "react";
 import TodoItem from "./TodoItem";
 import axios from "axios";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { useSelector,useDispatch } from "react-redux"
+import {incrim,decrim} from "./../redux/features/counterSlice"
+
+
+  
+
+
+    
+    
+    
+    
+  
+
+
 
 function Todos() {
+
+  const counter = useSelector(state => state.counter.value);
+ const dispatch = useDispatch();
   const vidTodo = useRef();
   const [todo, setTodo] = useState("");
-  const [terminer, setTerminer] = useState(false);
+  //const [terminer, setTerminer] = useState(false);
   const [taches, setTaches] = useState([]);
   const [id] = useState();
 
@@ -20,7 +37,7 @@ function Todos() {
       let date_creation = new Date();
       let date_modification = new Date();
 
-      let tache = {id, todo, terminer, date_creation, date_modification };
+      let tache = {id, todo, terminer:false, date_creation, date_modification };
 
       axios.post(url, tache);
 
@@ -36,21 +53,22 @@ function Todos() {
     }
   };
 
+
+
   // Upload automatic
 
   useEffect(() => {
     axios.get(url).then((resp) => setTaches(resp.data));
-  },[terminer]);
+  },[]);
+
 
 
 
   // pour terminer la tache
-  const handlerTerminer = async (id) => { 
-    console.log(id)
-    console.log(taches[id].terminer) 
-    setTerminer(!terminer)
+  const handlerTerminer = async (id,terminer) => {     
+    
     await axios
-      .patch(url + "/" + id,{terminer})
+      .patch(url + "/" + id,{terminer:!terminer})
       .then((response) => {
         console.log(response.data);
       })
@@ -77,9 +95,14 @@ function Todos() {
 
   return (
     <section className="text-center mx-auto bg-light p-4 mt-5">
-      <h1>TODO LiST</h1>
+      <div className="main d-flex justify-content-center align-items-center">ContentMain khalido</div>
+    <h1>{counter}</h1>
+    <button className="btn btn-primary" onClick={()=>dispatch(incrim(1))}>inc</button>
+    <button className="btn btn-danger" onClick={()=>dispatch(decrim(1))}>Dec</button>
 
-      <div className="row justify-content-evenly">
+      <h1>TODO List</h1>
+
+      <div className="row justify-content-evenly ">
         <input
           className="col form-control-lg"
           placeholder="Tache ..."
@@ -137,7 +160,7 @@ function Todos() {
 
       <div className="grido">
         {taches.map((tache) => (
-          <TodoItem
+          <TodoItem 
             key={tache.id}
             tache={tache}
             handlerTerminer={handlerTerminer}
